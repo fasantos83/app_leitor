@@ -6,6 +6,7 @@ import If from './If';
 export default class Leitor extends React.Component {
     constructor(props) {
         super(props);
+        this.textRef = React.createRef();
         this.state = {
             texto: "",
             tag: "",
@@ -16,8 +17,10 @@ export default class Leitor extends React.Component {
     }
 
     resetFields(){
-        setTimeout(() => 
-            this.setState({ texto: "", mostrarLista: false })
+        setTimeout(() => {
+            this.setState({ texto: "", mostrarLista: false });
+            this.textRef.current.focus();
+        }
         , 5000);
     }
 
@@ -47,7 +50,7 @@ export default class Leitor extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <View ref={this.viewRef} style={{...styles.container, backgroundColor: mostrarLista ? (adicionou ? 'green' : 'red') : 'white' }}>
-                    <TextInput style={styles.ex} autoFocus={true} onChangeText={this.onChangeText} value={texto} maxLength={10}/>
+                    <TextInput ref={this.textRef} style={styles.ex} autoFocus={true} onChangeText={this.onChangeText} value={texto} maxLength={10}/>
                     <If test={mostrarLista}>
                         <Text>TAG: {tag}</Text>
                         <ListaFlex data={mapaTag.get(tag)}/>
