@@ -24,6 +24,10 @@ export default class Leitor extends React.Component {
         , 5000);
     }
 
+    saveToFile(texto, novaData){
+        FileSystem.writeAsStringAsync(FileSystem.documentDirectory + "test.csv", texto + "," + novaData)
+    }
+
     onChangeText = texto => {
         let { mapaTag, adicionou } = this.state;
         let mostrarLista = String(texto).length === 10;
@@ -34,6 +38,7 @@ export default class Leitor extends React.Component {
             if(lista.length === 0 || lista[0].hora.getTime() - novaData.getTime() > 360000){
                 lista.unshift({hora: novaData});
                 mapaTag.set(texto, lista);
+                this.saveToFile(texto, novaData);
                 adicionou = true;
             }else{
                 adicionou = false;
